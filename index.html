@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gravity Controlled Ball</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #ball {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: #00ff00;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div id="ball"></div>
+
+    <script>
+        // 获取小球元素
+        let ball = document.getElementById('ball');
+        
+        // 设置初始位置
+        let x = window.innerWidth / 2 - 25;  // 屏幕中央
+        let y = window.innerHeight / 2 - 25;
+
+        // 更新小球位置
+        function updateBallPosition() {
+            ball.style.left = x + 'px';
+            ball.style.top = y + 'px';
+        }
+
+        // 监听设备运动
+        window.addEventListener('devicemotion', function(event) {
+            let acceleration = event.accelerationIncludingGravity;
+
+            // 根据加速度更新位置
+            x += acceleration.x * 2;  // 调整倍数以控制移动速度
+            y -= acceleration.y * 2;  // y 方向需要反转
+
+            // 边界检测，防止小球移出屏幕
+            if (x < 0) x = 0;
+            if (x > window.innerWidth - 50) x = window.innerWidth - 50;
+            if (y < 0) y = 0;
+            if (y > window.innerHeight - 50) y = window.innerHeight - 50;
+
+            // 更新小球位置
+            updateBallPosition();
+        });
+
+        // 初始化位置
+        updateBallPosition();
+    </script>
+</body>
+</html>
